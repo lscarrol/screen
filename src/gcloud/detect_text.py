@@ -16,7 +16,7 @@ def detect_text_uri(uri, timeout=5):
    image = vision.Image()
    image.source.image_uri = uri
 
-   # Set up a signal handler to raise an exception if the function takes too long
+   # Set up a signal handler to raise an exception if the function takes too long1
    def handler(signum, frame):
        raise TimeoutError("Timeout")
    signal.signal(signal.SIGALRM, handler)
