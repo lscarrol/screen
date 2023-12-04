@@ -4,7 +4,7 @@ from openai import OpenAI
 from IPython.display import display, Markdown
 
 # Set openai.api_key to the OPENAI environment variable
-client = OpenAI(api_key="")
+client = OpenAI(api_key="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")
 
 
 def detect_text_uri(uri):
@@ -51,7 +51,7 @@ def detect_text(path):
     retstr = "Texts:"
 
     for text in texts:
-        retstr = retstr + '\n"{text.description}"'
+        retstr = retstr + '\n' + text.description
 
     if response.error.message:
         raise Exception(
@@ -74,10 +74,10 @@ def ask_gpt(text):
                 "content": prompt
             }
         ],
-        model="text-davinci-002",
+        model="gpt-3.5-turbo-0613",
         max_tokens=100
     )
-    return response['choices'][0]['message']['content'].strip()
+    return response.choices[0].message.content
 
 
 
