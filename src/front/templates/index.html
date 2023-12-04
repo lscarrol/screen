@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Screen</title>
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f0f0f0;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+      }
+      form {
+          background-color: white;
+          padding: 20px;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          width: 100%;
+          max-width: 500px;
+          margin: 0 auto;
+      }
+      input[type="text"], input[type="password"] {
+          width: 90%;
+          padding: 10px;
+          margin-bottom: 10px;
+          border-radius: 5px;
+          border: 1px solid #ddd;
+      }
+      input[type="submit"] {
+          background-color: #0070c9;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+      }
+      input[type="submit"]:hover {
+          background-color: #0055a5;
+      }
+      @media (min-width: 500px) {
+          form {
+              width: 100%;
+              max-width: 500px;
+              margin: 0 auto;
+          }
+      }
+  </style>
+</head>
+<body>
+  <form action="/login" method="post">
+      <label for="apple_id">Apple ID:</label><br>
+      <input type="text" id="apple_id" name="apple_id"><br>
+      <label for="password">Password:</label><br>
+      <input type="password" id="password" name="password"><br>
+      <input type="submit" value="Login">
+  </form>
+</body>
+</html>
