@@ -1,0 +1,4 @@
+Service [screen-service] revision [screen-service-00001-j6t] has been deployed and is serving 100 percent of traffic.
+Service URL: https://screen-service-fzakhx6lfq-uk.a.run.app
+gcloud pubsub subscriptions create screenSub --topic screentopic
+gcloud run deploy screen-service --image gcr.io/screen-407901/pubsub --no-allow-unauthenticated

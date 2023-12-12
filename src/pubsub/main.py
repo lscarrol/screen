@@ -49,7 +49,6 @@ def index():
             return f"Bad Request: {msg}", 400
 
         try:
-            
             return (image.detect_text(data), 204)
 
         except Exception as e:
