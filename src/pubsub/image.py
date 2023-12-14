@@ -2,11 +2,16 @@ import os
 import tempfile
 
 from google.cloud import storage, vision
+from google.cloud import pubsub_v1
 
+publisher = pubsub_v1.PublisherClient()
 storage_client = storage.Client()
 client = vision.ImageAnnotatorClient()
 image = vision.Image()
 
+topic_path = publisher.topic_path('your-project-id', 'screentopic')
+data = retstr.encode("utf-8")
+future = publisher.publish(topic_path, data)
 
 def detect_text(data):
     """ Detect text in image
@@ -32,6 +37,7 @@ def detect_text(data):
     
 
     print(retstr)
-
+    data = retstr.encode("utf-8")
+    future = publisher.publish(topic_path, data)
 
     return retstr
