@@ -15,7 +15,7 @@ def callback(message):
    message.ack()
 
 subscriber = pubsub_v1.SubscriberClient()
-subscription_path = subscriber.subscription_path('your-project-id', 'your-subscription-name')
+subscription_path = subscriber.subscription_path('', 'screen-topic')
 
 streaming_pull_future = subscriber.subscribe(subscription_path, callback=callback)
 print("Listening for messages on {}..\n".format(subscription_path))
