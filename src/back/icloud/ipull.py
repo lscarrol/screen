@@ -11,12 +11,16 @@ apple_id = os.getenv("APPLE_ID")
 password = os.getenv("PASSWORD")
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+
+
 def call_gpt3(request, categories):
     openai.api_key = os.getenv('OPENAI_API_KEY')
 
     response = openai.completions.create(
         model="gpt-3.5-turbo-instruct",
-        prompt="What do you think this text is: " + request,
+        prompt="What do you think this text is: " + \
+        request + \
+        " Return the result in this format: Category | Name | Location (if applicable) | Short Description",
         max_tokens=60
     )
 
