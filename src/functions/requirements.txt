@@ -8,3 +8,6 @@ firebase-admin
 firebase_functions
 google.cloud
 google-cloud-vision
+functions-framework
+flask
+firestore
