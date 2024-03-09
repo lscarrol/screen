@@ -7,7 +7,7 @@ import firebase_admin
 from dotenv import load_dotenv
 from firebase_admin import credentials
 from firebase_admin import firestore
-from firebase_functions import https_fn, options, scheduler
+from firebase_functions import https_fn, options, scheduler_fn
 
 # Fetch the service account key JSON file contents
 cred = credentials.Certificate('../keys/screen-7b77b-firebase-adminsdk-sdkvq-96747a79e0.json')
@@ -20,6 +20,7 @@ firebase_admin.initialize_app(cred, {
 # Get a reference to the Firestore database
 db = firestore.client()
 
+load_dotenv()
 # Load environment variables
 apple_id = os.environ.get("APPLE_ID")
 password = os.environ.get("PASSWORD")
@@ -63,8 +64,9 @@ def detect_text(image_path):
     else:
         return None
 
-@scheduler(schedule="every 30 seconds", memory=128)
+@scheduler_fn.on_schedule(schedule="every minute", memory=128)
 def down_screen(event):
+    print("Function triggered")
     try:
         api = PyiCloudService(apple_id, password)
 
@@ -115,6 +117,6 @@ def down_screen(event):
 
         # Mark the screenshot as processed
         db.collection('processed_screenshots').add({'filename': photo.filename})
-
+        print("Function executed successfully")
     except Exception as e:
         print(f"Error: {str(e)}")

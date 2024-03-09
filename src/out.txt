@@ -1,0 +1,145 @@
+[2024-03-09T01:48:10.108Z] Field ".functions" in "firebase.json" is possibly invalid: should be object
+[2024-03-09T01:48:10.112Z] Object ".functions[0]" in "firebase.json" has unknown property: {"additionalProperty":"artifactRegistry"}
+[2024-03-09T01:48:10.112Z] Field ".functions" in "firebase.json" is possibly invalid: should match some schema in anyOf
+[2024-03-09T01:48:10.133Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[2024-03-09T01:48:10.134Z] > authorizing via signed-in user (lscarroll@protonmail.com)
+i  emulators: Starting emulators: functions, pubsub {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions, pubsub"}}
+[2024-03-09T01:48:10.148Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[2024-03-09T01:48:10.148Z] [pubsub] Pub/Sub Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[2024-03-09T01:48:10.149Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"pubsub":[{"address":"127.0.0.1","family":"IPv4","port":8085}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[2024-03-09T01:48:10.165Z] [hub] writing locator at /tmp/hub-screen-7b77b.json
+[2024-03-09T01:48:10.228Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[2024-03-09T01:48:10.229Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[2024-03-09T01:48:10.231Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"pubsub":[{"address":"127.0.0.1","family":"IPv4","port":8085}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+⚠  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: auth, firestore, database, hosting, storage {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: auth, firestore, database, hosting, storage"}}
+[2024-03-09T01:48:10.242Z] defaultcredentials: writing to file /home/lscarroll/.config/firebase/lscarroll_protonmail_com_application_default_credentials.json
+[2024-03-09T01:48:10.278Z] Setting GAC to /home/lscarroll/.config/firebase/lscarroll_protonmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to /home/lscarroll/.config/firebase/lscarroll_protonmail_com_application_default_credentials.json"}}
+[2024-03-09T01:48:10.294Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/screen-7b77b/adminSdkConfig [none]
+[2024-03-09T01:48:10.439Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/screen-7b77b/adminSdkConfig 200
+[2024-03-09T01:48:10.447Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/screen-7b77b/adminSdkConfig {"projectId":"screen-7b77b","databaseURL":"https://screen-7b77b-default-rtdb.firebaseio.com","storageBucket":"screen-7b77b.appspot.com"}
+[2024-03-09T01:48:10.501Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"pubsub"},"message":"Ignoring unsupported arg: projectId"}}
+[2024-03-09T01:48:10.502Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"pubsub"},"message":"Ignoring unsupported arg: auto_download"}}
+[2024-03-09T01:48:10.503Z] Starting Pub/Sub Emulator with command {"binary":"/home/lscarroll/.cache/firebase/emulators/pubsub-emulator-0.7.1/pubsub-emulator/bin/cloud-pubsub-emulator","args":["--host=127.0.0.1","--port=8085"],"optionalArgs":["port","host"],"joinArgs":true} {"metadata":{"emulator":{"name":"pubsub"},"message":"Starting Pub/Sub Emulator with command {\"binary\":\"/home/lscarroll/.cache/firebase/emulators/pubsub-emulator-0.7.1/pubsub-emulator/bin/cloud-pubsub-emulator\",\"args\":[\"--host=127.0.0.1\",\"--port=8085\"],\"optionalArgs\":[\"port\",\"host\"],\"joinArgs\":true}"}}
+i  pubsub: Pub/Sub Emulator logging to pubsub-debug.log {"metadata":{"emulator":{"name":"pubsub"},"message":"Pub/Sub Emulator logging to pubsub-debug.log"}}
+[2024-03-09T01:48:11.280Z] This is the Google Pub/Sub fake.
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"This is the Google Pub/Sub fake.\n"}}
+[2024-03-09T01:48:11.281Z] Implementation may be incomplete or differ from the real system.
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"Implementation may be incomplete or differ from the real system.\n"}}
+[2024-03-09T01:48:11.608Z] Mar 09, 2024 1:48:11 AM com.google.cloud.pubsub.testing.v1.Main main
+INFO: IAM integration is disabled. IAM policy methods and ACL checks are not supported
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"Mar 09, 2024 1:48:11 AM com.google.cloud.pubsub.testing.v1.Main main\nINFO: IAM integration is disabled. IAM policy methods and ACL checks are not supported\n"}}
+[2024-03-09T01:48:12.660Z] SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder". {"metadata":{"emulator":{"name":"pubsub"},"message":"SLF4J: Failed to load class \"org.slf4j.impl.StaticLoggerBinder\"."}}
+[2024-03-09T01:48:12.669Z] 
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"\n"}}
+[2024-03-09T01:48:12.670Z] SLF4J: Defaulting to no-operation (NOP) logger implementation {"metadata":{"emulator":{"name":"pubsub"},"message":"SLF4J: Defaulting to no-operation (NOP) logger implementation"}}
+[2024-03-09T01:48:12.670Z] 
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"\n"}}
+[2024-03-09T01:48:12.671Z] SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details. {"metadata":{"emulator":{"name":"pubsub"},"message":"SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details."}}
+[2024-03-09T01:48:12.671Z] 
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"\n"}}
+[2024-03-09T01:48:14.048Z] Mar 09, 2024 1:48:14 AM com.google.cloud.pubsub.testing.v1.Main main
+INFO: Server started, listening on 8085
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"Mar 09, 2024 1:48:14 AM com.google.cloud.pubsub.testing.v1.Main main\nINFO: Server started, listening on 8085\n"}}
+[2024-03-09T01:48:14.086Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[2024-03-09T01:48:14.090Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[2024-03-09T01:48:14.091Z] Starting Emulator UI with command {"binary":"node","args":["/home/lscarroll/.cache/firebase/emulators/ui-v1.11.7/server/server.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"/home/lscarroll/.cache/firebase/emulators/ui-v1.11.7/server/server.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to ui-debug.log"}}
+[2024-03-09T01:48:14.353Z] Web / API server started at 127.0.0.1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at 127.0.0.1:4000\n"}}
+[2024-03-09T01:48:14.354Z] Web / API server started at ::1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at ::1:4000\n"}}
+i  functions: Watching "/home/lscarroll/dev/screen/src/functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"/home/lscarroll/dev/screen/src/functions\" for Cloud Functions..."}}
+[2024-03-09T01:48:14.373Z] Customer code is not Node
+[2024-03-09T01:48:14.375Z] Validating python source
+[2024-03-09T01:48:14.375Z] Building python source
+i  functions: Loaded environment variables from .env. 
+[2024-03-09T01:48:14.380Z] Could not find functions.yaml. Must use http discovery
+[2024-03-09T01:48:14.385Z] Running command with virtualenv: command=., args=["\"/home/lscarroll/dev/screen/src/functions/venv/bin/activate\"","&&","python3.10","-c","\"import firebase_functions; import os; print(os.path.dirname(firebase_functions.__file__))\""]
+[2024-03-09T01:48:14.443Z] stdout: /home/lscarroll/dev/screen/src/functions/venv/lib/python3.10/site-packages/firebase_functions
+
+[2024-03-09T01:48:14.450Z] Running admin server with args: ["python3.10","\"/home/lscarroll/dev/screen/src/functions/venv/lib/python3.10/site-packages/firebase_functions/private/serving.py\""] and env: {"GCLOUD_PROJECT":"screen-7b77b","K_REVISION":"1","PORT":"80","GOOGLE_CLOUD_QUOTA_PROJECT":"screen-7b77b","FUNCTIONS_EMULATOR":"true","TZ":"UTC","FIREBASE_DEBUG_MODE":"true","FIREBASE_DEBUG_FEATURES":"{\"skipTokenVerification\":true,\"enableCors\":true}","FIREBASE_EMULATOR_HUB":"127.0.0.1:4400","PUBSUB_EMULATOR_HOST":"127.0.0.1:8085","CLOUD_EVENTARC_EMULATOR_HOST":"http://127.0.0.1:9299","FIREBASE_CONFIG":"{\"storageBucket\":\"screen-7b77b.appspot.com\",\"databaseURL\":\"https://screen-7b77b-default-rtdb.firebaseio.com\",\"projectId\":\"screen-7b77b\"}","GOOGLE_APPLICATION_CREDENTIALS":"/home/lscarroll/.config/firebase/lscarroll_protonmail_com_application_default_credentials.json","ADMIN_PORT":"8081"} in /home/lscarroll/dev/screen/src/functions
+[2024-03-09T01:48:14.451Z] Running command with virtualenv: command=., args=["\"/home/lscarroll/dev/screen/src/functions/venv/bin/activate\"","&&","python3.10","\"/home/lscarroll/dev/screen/src/functions/venv/lib/python3.10/site-packages/firebase_functions/private/serving.py\""]
+ * Serving Flask app 'serving'
+ * Debug mode: off
+
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:8081
+Press CTRL+C to quit
+
+127.0.0.1 - - [09/Mar/2024 01:48:16] "GET /__/functions.yaml HTTP/1.1" 200 -
+
+[2024-03-09T01:48:16.145Z] Got response from /__/functions.yaml endpoints:
+  down_screen:
+    availableMemoryMb: 128
+    concurrency: null
+    entryPoint: down_screen
+    ingressSettings: null
+    labels: {}
+    maxInstances: null
+    minInstances: null
+    platform: gcfv2
+    scheduleTrigger:
+      retryConfig: {}
+      schedule: every 30 seconds
+    secretEnvironmentVariables: []
+    serviceAccountEmail: null
+    timeoutSeconds: null
+params: []
+requiredAPIs:
+- api: cloudscheduler.googleapis.com
+  reason: Needed for scheduled functions.
+specVersion: v1alpha1
+
+127.0.0.1 - - [09/Mar/2024 01:48:16] "GET /__/quitquitquit HTTP/1.1" 200 -
+
+✔  functions: Loaded functions definitions from source: down_screen. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: down_screen."}}
+[2024-03-09T01:48:16.174Z] addPubsubTrigger {"eventTrigger":{"eventType":"pubsub","resource":""}}
+[2024-03-09T01:48:16.175Z] [pubsub] addTrigger(firebase-schedule-down_screen, us-central1-down_screen-0, http)
+[2024-03-09T01:48:16.177Z] [pubsub] Creating topic: firebase-schedule-down_screen
+[2024-03-09T01:48:16.335Z] Mar 09, 2024 1:48:16 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"Mar 09, 2024 1:48:16 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected HTTP/2 connection.\n"}}
+[2024-03-09T01:48:16.504Z] [pubsub] Creating sub for topic: firebase-schedule-down_screen
+✔  functions[us-central1-down_screen]: pubsub function initialized. {"metadata":{"emulator":{"name":"functions"},"message":"pubsub function initialized."}}
+
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌───────────┬────────────────┬─────────────────────────────────┐
+│ Emulator  │ Host:Port      │ View in Emulator UI             │
+├───────────┼────────────────┼─────────────────────────────────┤
+│ Functions │ 127.0.0.1:5001 │ http://127.0.0.1:4000/functions │
+├───────────┼────────────────┼─────────────────────────────────┤
+│ Pub/Sub   │ 127.0.0.1:8085 │ n/a                             │
+└───────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub running at 127.0.0.1:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[2024-03-09T01:53:52.188Z] Received signal SIGINT (Ctrl-C) 1
+ 
+i  emulators: Received SIGINT (Ctrl-C) for the first time. Starting a clean shutdown. 
+i  emulators: Please wait for a clean shutdown or send the SIGINT (Ctrl-C) signal again to stop right now. 
+i  emulators: Shutting down emulators. {"metadata":{"emulator":{"name":"hub"},"message":"Shutting down emulators."}}
+i  ui: Stopping Emulator UI {"metadata":{"emulator":{"name":"ui"},"message":"Stopping Emulator UI"}}
+⚠  Emulator UI has exited upon receiving signal: SIGINT 
+i  functions: Stopping Functions Emulator {"metadata":{"emulator":{"name":"functions"},"message":"Stopping Functions Emulator"}}
+i  pubsub: Stopping Pub/Sub Emulator {"metadata":{"emulator":{"name":"pubsub"},"message":"Stopping Pub/Sub Emulator"}}
+[2024-03-09T01:53:54.968Z] Received signal SIGINT (Ctrl-C) 2
+ 
+[2024-03-09T01:53:54.969Z] Skipping clean onExit() and cleanShutdown()
+⚠  emulators: Received SIGINT (Ctrl-C) 2 times. You have forced the Emulator Suite to exit without waiting for 1 subprocess to finish. These processes may still be running on your machine:  
+
+┌──────────────────┬────────────────┬─────────┐
+│ Emulator         │ Host:Port      │ PID     │
+├──────────────────┼────────────────┼─────────┤
+│ Pub/Sub Emulator │ 127.0.0.1:8085 │ 1466392 │
+└──────────────────┴────────────────┴─────────┘
+
+To force them to exit run:
+
+kill 1466392
+
