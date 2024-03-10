@@ -53,6 +53,18 @@ def validate_2fa():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/categorized-data', methods=['GET'])
+def get_categorized_data():
+    try:
+        categorized_data = []
+        docs = db.collection('categorized_data').get()
+        for doc in docs:
+            data = doc.to_dict()
+            categorized_data.append(data)
+        return jsonify(categorized_data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/api/trigger-scheduled-function', methods=['POST'])
 def trigger_scheduled_function():
     data = request.json
