@@ -13,8 +13,6 @@ app = Flask(__name__)
 
 @functions_framework.http
 def login(request):
-    print("Login function called")
-
     data = request.json
     username = data['username']
     password = data['password']
@@ -34,7 +32,6 @@ def login(request):
 
 @functions_framework.http
 def validate_2fa(request):
-    print("Validate 2FA function called")
     data = request.json
     username = data['username']
     two_factor_code = data['twoFactorCode']
@@ -53,7 +50,6 @@ def validate_2fa(request):
 
 @functions_framework.http
 def get_categorized_data(request):
-    print("Get categorized data function called")
     try:
         categorized_data = []
         docs = db.collection('categorized_data').get()
@@ -66,7 +62,6 @@ def get_categorized_data(request):
 
 @functions_framework.http
 def trigger_scheduled_function(request):
-    print("Trigger scheduled function called")
     data = request.json
     username = data['username']
     try:

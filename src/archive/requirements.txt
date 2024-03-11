@@ -1,0 +1,13 @@
+openai==1.13.3
+protobuf==4.25.3
+pyicloud==1.0.0
+pymongo==4.6.2
+python-dotenv==1.0.1
+watchdog==4.0.0
+firebase-admin
+firebase_functions
+google.cloud
+google-cloud-vision
+functions-framework
+flask
+firestore
