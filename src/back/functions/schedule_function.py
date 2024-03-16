@@ -2,8 +2,12 @@ import os
 import time
 from google.cloud import vision
 import openai
-from firebase_admin import firestore
+import firebase_admin
+from firebase_admin import credentials, firestoree
 
+
+cred = credentials.Certificate('screenr-cd3f7-firebase-adminsdk-bi4cr-9737ee940f.json')
+firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 def process_screenshots(api):

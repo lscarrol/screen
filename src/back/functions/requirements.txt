@@ -11,3 +11,5 @@ google-cloud-vision
 functions-framework
 flask
 firestore
+flask-cors
+flask_cors

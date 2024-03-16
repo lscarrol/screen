@@ -8,7 +8,7 @@
   },
   "functions": [
     {
-      "source": "functions",
+      "source": "back/functions",
       "codebase": "default",
       "ignore": [
         "venv",
@@ -26,6 +26,18 @@
       "**/node_modules/**"
     ],
     "rewrites": [
+      {
+        "source": "/login",
+        "function": "login"
+      },
+      {
+        "source": "/validate-2fa",
+        "function": "validate-2fa"
+      },
+      {
+        "source": "/trigger-scheduled-function",
+        "function": "trigger-scheduled-function"
+      },
       {
         "source": "**",
         "destination": "/index.html"
