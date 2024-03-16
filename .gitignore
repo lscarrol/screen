@@ -144,7 +144,7 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
-*.json
+screenr-cd3f7-firebase-adminsdk-bi4cr-9737ee940f.json
 # Pyre type checker
 .pyre/
 
