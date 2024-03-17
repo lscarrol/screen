@@ -4,7 +4,7 @@
   let twoFactorCode = '';
   let requires2FA = false;
   let error = '';
-  
+
   async function login() {
     try {
       const response = await fetch('/login', {
@@ -14,9 +14,12 @@
         },
         body: JSON.stringify({ username, password }),
       });
+
       const data = await response.json();
       if (data.requires2FA) {
         requires2FA = true;
+        // You can display the list of trusted devices to the user if needed
+        console.log(data.devices);
       } else {
         // Login successful, trigger the scheduled function
         triggerScheduledFunction();
@@ -26,7 +29,7 @@
       console.error(err);
     }
   }
-  
+
   async function submitTwoFactorCode() {
     try {
       const response = await fetch('/validate-2fa', {
@@ -34,8 +37,9 @@
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, twoFactorCode }),
+        body: JSON.stringify({ username, password, twoFactorCode }),
       });
+
       if (response.ok) {
         // 2FA validation successful, trigger the scheduled function
         triggerScheduledFunction();
@@ -47,7 +51,7 @@
       console.error(err);
     }
   }
-  
+
   async function triggerScheduledFunction() {
     try {
       const response = await fetch('/trigger-scheduled-function', {
@@ -57,6 +61,7 @@
         },
         body: JSON.stringify({ username }),
       });
+
       if (response.ok) {
         console.log('Scheduled function triggered successfully');
       } else {
