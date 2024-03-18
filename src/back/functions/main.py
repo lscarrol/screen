@@ -38,11 +38,14 @@ def login(request: https_fn.Request) -> https_fn.Response:
 
 @https_fn.on_request()
 def validate_2fa(request: https_fn.Request) -> https_fn.Response:
-    data = request.get_json()
-    username = data['username']
-    two_factor_code = data['twoFactorCode']
-
     try:
+        # Log the request data
+        print('Request data:', request.data)
+
+        data = request.get_json()
+        username = data['username']
+        two_factor_code = data['twoFactorCode']
+
         # Retrieve the client_id from Firestore
         doc_ref = db.collection('sessions').document(username)
         doc = doc_ref.get()
@@ -58,6 +61,12 @@ def validate_2fa(request: https_fn.Request) -> https_fn.Response:
             return https_fn.Response(json.dumps({'success': True}), content_type='application/json')
         else:
             return https_fn.Response(json.dumps({'error': 'Invalid 2FA code'}), content_type='application/json', status=401)
+
+    except json.JSONDecodeError as e:
+        # Log the JSON parsing error
+        print('JSON Parsing Error:', str(e))
+        return https_fn.Response(json.dumps({'error': 'Invalid JSON data'}), content_type='application/json', status=400)
+
     except Exception as e:
         # Log the error and the response data
         print('2FA Validation Error:', str(e))
