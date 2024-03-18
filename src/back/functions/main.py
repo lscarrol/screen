@@ -21,6 +21,10 @@ def login(request: https_fn.Request) -> https_fn.Response:
 
         if api.requires_2fa:
             devices = api.trusted_devices
+            client_id = api.client_id
+            print(client_id)
+            doc_ref = db.collection('sessions').document(username)
+            doc_ref.set({'client_id': client_id})
             # Return the list of trusted devices to the client
             return https_fn.Response(json.dumps({'requires2FA': True, 'devices': devices}), content_type='application/json')
         else:
@@ -55,6 +59,9 @@ def validate_2fa(request: https_fn.Request) -> https_fn.Response:
         else:
             return https_fn.Response(json.dumps({'error': 'Invalid 2FA code'}), content_type='application/json', status=401)
     except Exception as e:
+        # Log the error and the response data
+        print('2FA Validation Error:', str(e))
+        print('Response data:', request.data)
         return https_fn.Response(json.dumps({'error': str(e)}), content_type='application/json', status=500)
 
 @https_fn.on_request()
