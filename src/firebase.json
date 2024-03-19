@@ -32,11 +32,11 @@
       },
       {
         "source": "/validate-2fa",
-        "function": "validate-2fa"
+        "function": "validate_2fa"
       },
       {
         "source": "/trigger-scheduled-function",
-        "function": "trigger-scheduled-function"
+        "function": "trigger_scheduled_function"
       },
       {
         "source": "**",

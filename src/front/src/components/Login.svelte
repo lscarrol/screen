@@ -31,34 +31,34 @@
   }
 
   async function submitTwoFactorCode() {
-  try {
-    const response = await fetch('/validate-2fa', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, twoFactorCode }),
-    });
+    try {
+      const response = await fetch('/validate-2fa', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, twoFactorCode }),
+      });
 
-    if (response.ok) {
-      // 2FA validation successful, trigger the scheduled function
-      triggerScheduledFunction();
+      if (response.ok) {
+        // 2FA validation successful, trigger the scheduled function
+        triggerScheduledFunction();
 
-      // Print the response data
-      const data = await response.json();
-      console.log('2FA Validation Response:', data);
-    } else {
-      error = 'Invalid 2FA code. Please try again.';
+        // Print the response data
+        const data = await response.json();
+        console.log('2FA Validation Response:', data);
+      } else {
+        error = 'Invalid 2FA code. Please try again.';
 
-      // Print the error response
-      const errorData = await response.json();
-      console.log('2FA Validation Error:', errorData);
+        // Print the error response
+        const errorData = await response.json();
+        console.log('2FA Validation Error:', errorData);
+      }
+    } catch (err) {
+      error = 'An error occurred during 2FA validation.';
+      console.error('2FA Validation Error:', err);
     }
-  } catch (err) {
-    error = 'An error occurred during 2FA validation.';
-    console.error('2FA Validation Error:', err);
   }
-}
 
   async function triggerScheduledFunction() {
     try {
@@ -67,7 +67,7 @@
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username }),
+        body: JSON.stringify({ username, password }),  // Add this line to send the password in the request payload
       });
 
       if (response.ok) {
