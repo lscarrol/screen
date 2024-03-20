@@ -44,15 +44,11 @@ def validate_2fa(request: https_fn.Request) -> https_fn.Response:
 
         data = request.get_json()
         username = data['username']
+        password = data['password']  # Retrieve the password from the request data
         two_factor_code = data['twoFactorCode']
 
-        # Retrieve the client_id from Firestore
-        doc_ref = db.collection('sessions').document(username)
-        doc = doc_ref.get()
-        client_id = doc.to_dict()['client_id']
-
-        # Create a new PyiCloudService instance using the client_id
-        api = PyiCloudService(username, client_id=client_id)
+        # Create a new PyiCloudService instance using the username and password
+        api = PyiCloudService(username, password)
 
         result = api.validate_2fa_code(two_factor_code)
 

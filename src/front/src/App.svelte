@@ -11,14 +11,18 @@
 	}
 	</script>
 	
-	<main>
-	  {#if !loggedIn}
-		<Login on:login={handleLogin} />
-	  {:else}
-		<CategorizedData />
-	  {/if}
-	</main>
-	
+	<main class="min-h-screen bg-gray-100">
+		{#if !loggedIn}
+		  <div class="fade-in">
+			<Login on:login={handleLogin} />
+		  </div>
+		{:else}
+		  <div class="fade-in">
+			<CategorizedData />
+		  </div>
+		{/if}
+	  </main>
+	  
 	<style>
 	main {
 	  text-align: center;

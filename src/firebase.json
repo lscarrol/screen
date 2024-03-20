@@ -39,6 +39,10 @@
         "function": "trigger_scheduled_function"
       },
       {
+        "source": "/categorized-data",
+        "function": "get_categorized_data"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
