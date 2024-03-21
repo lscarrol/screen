@@ -31,14 +31,6 @@
         "function": "login"
       },
       {
-        "source": "/validate-2fa",
-        "function": "validate_2fa"
-      },
-      {
-        "source": "/trigger-scheduled-function",
-        "function": "trigger_scheduled_function"
-      },
-      {
         "source": "/categorized-data",
         "function": "get_categorized_data"
       },

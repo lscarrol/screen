@@ -13,3 +13,4 @@ flask
 firestore
 flask-cors
 flask_cors
+google-cloud-storage
