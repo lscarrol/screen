@@ -32,25 +32,19 @@
 
   async function submitTwoFactorCode() {
   try {
-    const response = await fetch('/validate-2fa', {
+    const response = await fetch('/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username, password, twoFactorCode }),  // Include the password in the request payload
+      body: JSON.stringify({ username, password, twoFactorCode }),
     });
 
     if (response.ok) {
-      // 2FA validation successful, trigger the scheduled function
-      triggerScheduledFunction();
-
-      // Print the response data
-      const data = await response.json();
-      console.log('2FA Validation Response:', data);
+      // 2FA validation successful
+      console.log('2FA Validation Successful');
     } else {
       error = 'Invalid 2FA code. Please try again.';
-
-      // Print the error response
       const errorData = await response.json();
       console.log('2FA Validation Error:', errorData);
     }
@@ -60,25 +54,6 @@
   }
 }
 
-  async function triggerScheduledFunction() {
-    try {
-      const response = await fetch('/trigger-scheduled-function', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),  // Add this line to send the password in the request payload
-      });
-
-      if (response.ok) {
-        console.log('Scheduled function triggered successfully');
-      } else {
-        console.error('Failed to trigger scheduled function');
-      }
-    } catch (err) {
-      console.error('Error triggering scheduled function:', err);
-    }
-  }
 </script>
 
 <div class="min-h-screen flex items-center justify-center bg-gray-100">
