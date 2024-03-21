@@ -34,17 +34,10 @@ def login(request: https_fn.Request) -> https_fn.Response:
                     return https_fn.Response(json.dumps({'error': 'Invalid 2FA code'}), content_type='application/json', status=401)
             else:
                 devices = api.trusted_devices
-                client_id = api.client_id
-                print(client_id)
-                doc_ref = db.collection('sessions').document(username)
-                doc_ref.set({'client_id': client_id})
                 # Return the list of trusted devices to the client
                 return https_fn.Response(json.dumps({'requires2FA': True, 'devices': devices}), content_type='application/json')
         else:
-            # Login successful, store the client_id in Firestore
-            client_id = api.client_id
-            doc_ref = db.collection('sessions').document(username)
-            doc_ref.set({'client_id': client_id})
+            # Login successful
             from schedule_function import process_screenshots
             process_screenshots(api)
             return https_fn.Response(json.dumps({'success': True}), content_type='application/json')
