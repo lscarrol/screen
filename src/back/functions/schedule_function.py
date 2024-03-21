@@ -74,7 +74,7 @@ def call_gpt3(request, categories):
 
     gpt3_response = response.choices[0].text.strip()
     print(f'GPT-3 response: {gpt3_response}')
-
+    
     # Store the response in Firestore, but check for duplicates first
     category, name, location, description = gpt3_response.split(' | ')
     data = {

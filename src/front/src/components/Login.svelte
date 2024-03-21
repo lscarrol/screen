@@ -1,9 +1,10 @@
 <script>
+  export let requires2FA;
+  export let error;
+
   let username = '';
   let password = '';
   let twoFactorCode = '';
-  let requires2FA = false;
-  let error = '';
 
   async function login() {
     try {
@@ -16,13 +17,16 @@
       });
 
       const data = await response.json();
+
       if (data.requires2FA) {
         requires2FA = true;
         // You can display the list of trusted devices to the user if needed
         console.log(data.devices);
+      } else if (data.success) {
+        // Login successful
+        loggedIn = true;
       } else {
-        // Login successful, trigger the scheduled function
-        triggerScheduledFunction();
+        error = data.error;
       }
     } catch (err) {
       error = 'An error occurred during login.';
@@ -31,29 +35,28 @@
   }
 
   async function submitTwoFactorCode() {
-  try {
-    const response = await fetch('/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password, twoFactorCode }),
-    });
+    try {
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password, twoFactorCode }),
+      });
 
-    if (response.ok) {
-      // 2FA validation successful
-      console.log('2FA Validation Successful');
-    } else {
-      error = 'Invalid 2FA code. Please try again.';
-      const errorData = await response.json();
-      console.log('2FA Validation Error:', errorData);
+      const data = await response.json();
+
+      if (data.success) {
+        // 2FA validation successful
+        loggedIn = true;
+      } else {
+        error = data.error;
+      }
+    } catch (err) {
+      error = 'An error occurred during 2FA validation.';
+      console.error(err);
     }
-  } catch (err) {
-    error = 'An error occurred during 2FA validation.';
-    console.error('2FA Validation Error:', err);
   }
-}
-
 </script>
 
 <div class="min-h-screen flex items-center justify-center bg-gray-100">
