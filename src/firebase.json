@@ -31,6 +31,10 @@
         "function": "login"
       },
       {
+        "source": "/check-login",
+        "function": "check_login"
+      },
+      {
         "source": "/categorized-data",
         "function": "get_categorized_data"
       },

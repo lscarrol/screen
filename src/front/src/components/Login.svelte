@@ -1,4 +1,8 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
+
   export let requires2FA;
   export let error;
 
@@ -24,7 +28,7 @@
         console.log(data.devices);
       } else if (data.success) {
         // Login successful
-        loggedIn = true;
+        dispatch('login');
       } else {
         error = data.error;
       }
@@ -48,7 +52,7 @@
 
       if (data.success) {
         // 2FA validation successful
-        loggedIn = true;
+        dispatch('login');
       } else {
         error = data.error;
       }

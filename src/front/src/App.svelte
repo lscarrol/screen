@@ -8,6 +8,15 @@
 	let requires2FA = false;
 	let error = '';
   
+	onMount(async () => {
+	  // Check if the user is already logged in
+	  const response = await fetch('/check-login');
+	  const data = await response.json();
+	  if (data.loggedIn) {
+		loggedIn = true;
+	  }
+	});
+  
 	function handleLogin() {
 	  loggedIn = true;
 	}
