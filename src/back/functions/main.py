@@ -15,31 +15,41 @@ def login(request: https_fn.Request) -> https_fn.Response:
     data = request.get_json()
     username = data['username']
     password = data['password']
-    two_factor_code = data.get('twoFactorCode')  # Get the 2FA code from the request data
+    two_factor_code = data.get('twoFactorCode')
 
     try:
-        api = PyiCloudService(username, password)
+        # Check if session data exists in Firestore
+        session_doc = db.collection('sessions').document(username).get()
+        if session_doc.exists:
+            session_data = session_doc.to_dict()
+            api = PyiCloudService(username, password)
+            api.session_data = session_data
+            api.authenticate()
+        else:
+            api = PyiCloudService(username, password)
 
         if api.requires_2fa:
             if two_factor_code:
                 # Validate the 2FA code
                 result = api.validate_2fa_code(two_factor_code)
-
                 if result:
                     # 2FA validation successful
                     from schedule_function import process_screenshots
                     process_screenshots(api)
+                    # Store the session data in Firestore
+                    db.collection('sessions').document(username).set(api.session_data)
                     return https_fn.Response(json.dumps({'success': True}), content_type='application/json')
                 else:
                     return https_fn.Response(json.dumps({'error': 'Invalid 2FA code'}), content_type='application/json', status=401)
             else:
                 devices = api.trusted_devices
-                # Return the list of trusted devices to the client
                 return https_fn.Response(json.dumps({'requires2FA': True, 'devices': devices}), content_type='application/json')
         else:
             # Login successful
             from schedule_function import process_screenshots
             process_screenshots(api)
+            # Store the session data in Firestore
+            db.collection('sessions').document(username).set(api.session_data)
             return https_fn.Response(json.dumps({'success': True}), content_type='application/json')
     except Exception as e:
         return https_fn.Response(json.dumps({'error': str(e)}), content_type='application/json', status=401)
