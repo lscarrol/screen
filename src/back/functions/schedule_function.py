@@ -65,7 +65,7 @@ def detect_text_from_uri(uri):
         return None
 
 def call_gpt3(request, categories):
-    openai.api_key = "os.getenv("OPENAI_API_KEY")"
+    openai.api_key = ""
     response = openai.completions.create(
         model="gpt-3.5-turbo-instruct",
         prompt="What do you think this text is: " + request + " Return the result in this format: Category | Name | Location (if applicable) | Short Description",
@@ -74,7 +74,7 @@ def call_gpt3(request, categories):
 
     gpt3_response = response.choices[0].text.strip()
     print(f'GPT-3 response: {gpt3_response}')
-
+    
     # Store the response in Firestore, but check for duplicates first
     category, name, location, description = gpt3_response.split(' | ')
     data = {
