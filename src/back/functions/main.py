@@ -10,13 +10,13 @@ cred = credentials.Certificate('screenr-cd3f7-firebase-adminsdk-bi4cr-9737ee940f
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-def initialize_api(username, password=None, session_data=None):
+def initialize_api(username, password, session_data=None):
     if session_data:
-        api = PyiCloudService(username)
+        api = PyiCloudService(apple_id=username, password="")
         api.session_data = session_data
         api.authenticate()
     else:
-        api = PyiCloudService(username, password)
+        api = PyiCloudService(apple_id=username, password=password)
     return api
 
 @https_fn.on_request()
@@ -31,7 +31,7 @@ def login(request: https_fn.Request) -> https_fn.Response:
         session_doc = db.collection('sessions').document(username).get()
         if session_doc.exists:
             session_data = session_doc.to_dict()
-            api = initialize_api(username, session_data=session_data)
+            api = initialize_api(username, "", session_data=session_data)
         else:
             api = initialize_api(username, password)
 
@@ -58,6 +58,7 @@ def login(request: https_fn.Request) -> https_fn.Response:
             # Store the session data in Firestore
             db.collection('sessions').document(username).set(api.session_data)
             return https_fn.Response(json.dumps({'success': True}), content_type='application/json')
+
     except Exception as e:
         return https_fn.Response(json.dumps({'error': str(e)}), content_type='application/json', status=401)
 
@@ -65,7 +66,6 @@ def login(request: https_fn.Request) -> https_fn.Response:
 def check_login(request: https_fn.Request) -> https_fn.Response:
     # Get the username from the session cookie or request data
     username = request.cookies.get('username') or request.get_json().get('username')
-
     if username:
         # Check if session data exists in Firestore
         session_doc = db.collection('sessions').document(username).get()

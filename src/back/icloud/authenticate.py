@@ -1,92 +1,72 @@
-import requests
+import os
 import json
-import uuid
+from pyicloud import PyiCloudService
 
-# Set up the necessary URLs and headers
-AUTH_ENDPOINT = "https://idmsa.apple.com/appleauth/auth"
-SETUP_ENDPOINT = "https://setup.icloud.com/setup/ws/1"
+def authenticate_with_2fa(username, password, session_directory):
+    api = PyiCloudService(username, password)
 
-def authenticate(apple_id, password):
-    # Create a new requests session
-    session = requests.Session()
+    if api.requires_2fa:
+        print("Two-factor authentication required.")
+        code = input("Enter the 2FA code: ")
+        result = api.validate_2fa_code(code)
+        if not result:
+            print("Failed to verify 2FA code")
+            return None
 
-    # Set up the required headers for authentication
-    headers = {
-        "Accept": "*/*",
-        "Content-Type": "application/json",
-        "X-Apple-OAuth-Client-Id": "d39ba9916b7251055b22c7f910e2ea796ee65e98b2ddecea8f5dde8d9d1a815d",
-        "X-Apple-OAuth-Client-Type": "firstPartyAuth",
-        "X-Apple-OAuth-Redirect-URI": "https://www.icloud.com",
-        "X-Apple-OAuth-Require-Grant-Code": "true",
-        "X-Apple-OAuth-Response-Mode": "web_message",
-        "X-Apple-OAuth-Response-Type": "code",
-        "X-Apple-OAuth-State": "auth-" + str(uuid.uuid1()).lower(),
-        "X-Apple-Widget-Key": "d39ba9916b7251055b22c7f910e2ea796ee65e98b2ddecea8f5dde8d9d1a815d",
-    }
+    # Save the session data
+    session_path = os.path.join(session_directory, f"{username}.session")
+    with open(session_path, "w", encoding="utf-8") as session_f:
+        json.dump(api.session_data, session_f)
 
-    # Prepare the authentication data
-    data = {
-        "accountName": apple_id,
-        "password": password,
-        "rememberMe": True,
-        "trustTokens": [],
-    }
+    print("Logged in successfully. Session saved.")
+    return api
+
+def authenticate_with_session(username, session_directory):
+    session_path = os.path.join(session_directory, f"{username}.session")
 
     try:
-        # Send the authentication request
-        response = session.post(
-            f"{AUTH_ENDPOINT}/signin",
-            params={"isRememberMeEnabled": "true"},
-            data=json.dumps(data),
-            headers=headers,
-        )
-        response.raise_for_status()
+        with open(session_path, encoding="utf-8") as session_f:
+            session_data = json.load(session_f)
+    except FileNotFoundError:
+        print("Session file not found. Please log in with credentials first.")
+        return None
 
-        # Extract the necessary tokens and information from the response
-        auth_data = response.json()
-        session_token = auth_data["authType"][0]["sessionToken"]
-        session_id = auth_data["authType"][0]["sessionId"]
-        trust_token = auth_data["authType"][0]["trustToken"]
-        scnt = auth_data["scnt"]
+    api = PyiCloudService(username, "")
+    api.session_data = session_data
+    api.session.cookies.load(ignore_discard=True, ignore_expires=True)
 
-        # Set up the headers for the setup request
-        setup_headers = {
-            "Accept": "*/*",
-            "Content-Type": "application/json",
-            "X-Apple-ID-Session-Id": session_id,
-            "X-Apple-Session-Token": session_token,
-            "X-Apple-TwoSV-Trust-Token": trust_token,
-            "scnt": scnt,
-        }
-
-        # Send the setup request to retrieve account information
-        setup_data = {
-            "accountCountryCode": "US",
-            "dsWebAuthToken": session_token,
-            "extended_login": True,
-            "trustToken": trust_token,
-        }
-        setup_response = session.post(
-            f"{SETUP_ENDPOINT}/accountLogin",
-            data=json.dumps(setup_data),
-            headers=setup_headers,
-        )
-        setup_response.raise_for_status()
-
-        # Return the authenticated session
-        return session
-
-    except requests.exceptions.RequestException as e:
-        print("Authentication failed:", e)
+    try:
+        api.authenticate()
+        print("Logged in successfully using saved session.")
+        return api
+    except:
+        print("Failed to authenticate with saved session. Please log in with credentials and 2FA again.")
         return None
 
 # Usage example
-apple_id = ""
+username = ""
 password = ""
+session_directory = "./sessions"
 
-session = authenticate(apple_id, password)
-if session:
-    print("Authentication successful!")
-    # Use the authenticated session for further requests
-else:
+# Create the session directory if it doesn't exist
+os.makedirs(session_directory, exist_ok=True)
+
+# Log in with credentials and 2FA
+api = authenticate_with_2fa(username, password, session_directory)
+
+if api is None:
     print("Authentication failed.")
+    exit(1)
+
+# Perform operations with the authenticated API
+# ...
+
+# Log in with saved session
+api = authenticate_with_session(username, session_directory)
+
+if api is None:
+    print("Authentication failed.")
+    exit(1)
+
+# Perform operations with the authenticated API
+# ...
