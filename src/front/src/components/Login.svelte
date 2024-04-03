@@ -40,7 +40,7 @@
 
   async function submitTwoFactorCode() {
     try {
-      const response = await fetch('/login', {
+      const response = await fetch('/validate-2fa', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
