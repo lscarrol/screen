@@ -35,6 +35,10 @@
         "function": "check_login"
       },
       {
+        "source": "/validate-2fa",
+        "function": "validate_2fa"
+      },
+      {
         "source": "/categorized-data",
         "function": "get_categorized_data"
       },

@@ -5,7 +5,7 @@ __pycache__/
 *.pyc
 # C extensions
 *.so
-
+firebsae.js
 *.PNG
 # Distribution / packaging
 .Python

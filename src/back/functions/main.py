@@ -6,7 +6,7 @@ from flask_cors import CORS
 from pyicloud import PyiCloudService
 import json
 
-cred = credentials.Certificate('screenr-cd3f7-firebase-adminsdk-bi4cr-b93232585f.json')
+cred = credentials.Certificate('auth.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
