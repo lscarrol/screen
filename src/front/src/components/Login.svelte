@@ -28,7 +28,7 @@
         console.log(data.devices);
       } else if (data.success) {
         // Login successful
-        dispatch('login');
+        
       } else {
         error = data.error;
       }
@@ -52,7 +52,7 @@
 
       if (data.success) {
         // 2FA validation successful
-        dispatch('login');
+        console.error("LOGIN SUCCESSFUL");
       } else {
         error = data.error;
       }
