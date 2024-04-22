@@ -24,8 +24,7 @@
 
       if (data.requires2FA) {
         requires2FA = true;
-        // You can display the list of trusted devices to the user if needed
-        console.log(data.devices);
+
       } else if (data.success) {
         // Login successful
         
