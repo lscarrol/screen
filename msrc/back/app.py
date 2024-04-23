@@ -9,13 +9,17 @@ import time
 from dotenv import load_dotenv
 from google.cloud import vision
 import openai
-
+import os
+from dotenv import load_dotenv
 cred = credentials.Certificate('auth.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 app = Flask(__name__)
 CORS(app)
+
+load_dotenv()
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 def call_gpt3(request, categories):
@@ -25,7 +29,8 @@ def call_gpt3(request, categories):
         model="gpt-3.5-turbo-instruct",
         prompt="What do you think this text is: " + \
         request + \
-        " Return the result in this format: Category | Name | Location (if applicable) | Short Description",
+        " Return the result in this format: Category | Name | Location (if applicable) | Short Description /n\
+          It must be split with |.",
         max_tokens=100
     )
 
@@ -47,48 +52,63 @@ def detect_text(image_path):
     else:
         return None
 
-def down_screen(api):
+def down_screen(api, username):
     while True:
+        print("Pulling screenshots -------------------")
         # Get the list of photos
         photos = api.photos.albums['Screenshots']
-
+        
         # Find the latest screenshot
         photo = next(iter(api.photos.albums['Screenshots']), None)
         download = photo.download()
-
+        
         # Check if the screenshot has been processed before
-        screenshot_ref = db.collection('screenshots').document(photo.filename)
+        screenshot_ref = db.collection('screenshots').document(username).collection('screenshots').document(photo.filename)
         screenshot_doc = screenshot_ref.get()
-
+        
         if not screenshot_doc.exists:
             # Save the screenshot to a temporary file
             with tempfile.NamedTemporaryFile(delete=False) as temp_file:
                 temp_file.write(download.raw.read())
                 temp_file_path = temp_file.name
-
+            
             print(f'Downloaded: {photo.filename}')
-
+            
             # Detect text in the downloaded screenshot
             detected_text = detect_text(temp_file_path)
-
+            
             if detected_text:
                 print(f'Detected text: {detected_text}')
-
+                
                 # Pass the detected text to GPT-3
                 gpt3_response = call_gpt3(detected_text, None)
                 print(f'GPT-3 response: {gpt3_response}')
-
-                # Save the screenshot details and GPT-3 response in Firestore
+                
+                
+                # Extract category, name, location, and description from GPT-3 response
+                category, name, location, description = gpt3_response.split('|')
+                category = category.strip()
+                name = name.strip()
+                location = location.strip()
+                description = description.strip()
+                
+                # Save the screenshot details and extracted data in Firestore
+                category_ref = db.collection('screenshots').document(username).collection('categories').document(category).collection('items').document(name)
+                category_ref.set({
+                    'location': location,
+                    'description': description
+                })
+                
                 screenshot_ref.set({
                     'filename': photo.filename,
                     'detected_text': detected_text,
-                    'gpt3_response': gpt3_response,
+                    'category': category,
                     'timestamp': firestore.SERVER_TIMESTAMP
                 })
-
+            
             # Delete the temporary file
             os.unlink(temp_file_path)
-
+        
         # Wait for a while before checking again
         # Adjust the sleep time as needed
         time.sleep(10)  # Check every 10 seconds
@@ -104,7 +124,7 @@ def login():
     if api.requires_2fa:
         return jsonify({'requires_2fa': True})
 
-    down_screen(api)
+    down_screen(api, username)
     session_data = api.session_data
     db.collection('sessions').document(username).set(session_data)
 
@@ -125,7 +145,7 @@ def login_with_session():
 
         try:
             api.authenticate()
-            down_screen(api)
+            down_screen(api, username)
             return jsonify({'success': True})
         except:
             return jsonify({'success': False, 'message': 'Failed to authenticate with saved session.'})
