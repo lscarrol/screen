@@ -11,6 +11,9 @@ from google.cloud import vision
 import openai
 import os
 from dotenv import load_dotenv
+import threading
+
+
 cred = credentials.Certificate('auth.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
@@ -21,6 +24,10 @@ CORS(app)
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+
+def run_down_screen(api, username):
+    thread = threading.Thread(target=down_screen, args=(api, username))
+    thread.start()
 
 def call_gpt3(request, categories):
     openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -54,7 +61,6 @@ def detect_text(image_path):
 
 def down_screen(api, username):
     while True:
-        print("Pulling screenshots -------------------")
         # Get the list of photos
         photos = api.photos.albums['Screenshots']
         
@@ -124,7 +130,7 @@ def login():
     if api.requires_2fa:
         return jsonify({'requires_2fa': True})
 
-    down_screen(api, username)
+    run_down_screen(api, username)
     session_data = api.session_data
     db.collection('sessions').document(username).set(session_data)
 
@@ -145,7 +151,7 @@ def login_with_session():
 
         try:
             api.authenticate()
-            down_screen(api, username)
+            run_down_screen(api, username)
             return jsonify({'success': True})
         except:
             return jsonify({'success': False, 'message': 'Failed to authenticate with saved session.'})
