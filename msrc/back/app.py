@@ -37,7 +37,7 @@ def call_gpt3(request, categories):
         prompt="What do you think this text is: " + \
         request + \
         " Return the result in this format: Category | Name | Location (if applicable) | Short Description /n\
-          It must be split with |.",
+          It must be split with |. Only return one answer, always with 4 things split by |",
         max_tokens=100
     )
 
@@ -64,56 +64,62 @@ def down_screen(api, username):
         # Get the list of photos
         photos = api.photos.albums['Screenshots']
         
-        # Find the latest screenshot
-        photo = next(iter(api.photos.albums['Screenshots']), None)
-        download = photo.download()
-        
-        # Check if the screenshot has been processed before
-        screenshot_ref = db.collection('screenshots').document(username).collection('screenshots').document(photo.filename)
-        screenshot_doc = screenshot_ref.get()
-        
-        if not screenshot_doc.exists:
-            # Save the screenshot to a temporary file
-            with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-                temp_file.write(download.raw.read())
-                temp_file_path = temp_file.name
+        # Iterate through each photo in the album
+        for photo in photos:
+            # Check if the screenshot has been processed before
+            screenshot_ref = db.collection('screenshots').document(username).collection('screenshots').document(photo.filename)
+            screenshot_doc = screenshot_ref.get()
             
-            print(f'Downloaded: {photo.filename}')
-            
-            # Detect text in the downloaded screenshot
-            detected_text = detect_text(temp_file_path)
-            
-            if detected_text:
-                print(f'Detected text: {detected_text}')
+            if not screenshot_doc.exists:
+                # Download the screenshot
+                download = photo.download()
                 
-                # Pass the detected text to GPT-3
-                gpt3_response = call_gpt3(detected_text, None)
-                print(f'GPT-3 response: {gpt3_response}')
+                # Save the screenshot to a temporary file
+                with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+                    temp_file.write(download.raw.read())
+                    temp_file_path = temp_file.name
                 
+                print(f'Downloaded: {photo.filename}')
                 
-                # Extract category, name, location, and description from GPT-3 response
-                category, name, location, description = gpt3_response.split('|')
-                category = category.strip()
-                name = name.strip()
-                location = location.strip()
-                description = description.strip()
+                # Detect text in the downloaded screenshot
+                detected_text = detect_text(temp_file_path)
                 
-                # Save the screenshot details and extracted data in Firestore
-                category_ref = db.collection('screenshots').document(username).collection('categories').document(category).collection('items').document(name)
-                category_ref.set({
-                    'location': location,
-                    'description': description
-                })
+                if detected_text:
+                    print(f'Detected text: {detected_text}')
+                    
+                    # Pass the detected text to GPT-3
+                    gpt3_response = call_gpt3(detected_text, None)
+                    print(f'GPT-3 response: {gpt3_response}')
+
+                    screenshot_ref.set({
+                        'filename': photo.filename,
+                        'detected_text': detected_text,
+                        'timestamp': firestore.SERVER_TIMESTAMP
+                    })
+
+                    if len(gpt3_response.split('|')) != 4:
+                        category, name, location, description = None, None, None, None
+                    # Extract category, name, location, and description from GPT-3 response
+                    category, name, location, description = gpt3_response.split('|')
+                    category = category.strip()
+                    name = name.strip()
+                    location = location.strip()
+                    description = description.strip()
+                    
+                    # Save the screenshot details and extracted data in Firestore
+                    if name != None:
+                        category_ref = db.collection('screenshots').document(username).collection('categories').document(name)
+                        category_ref.set({
+                            'category': category,
+                            'location': location,
+                            'description': description
+                        })
                 
-                screenshot_ref.set({
-                    'filename': photo.filename,
-                    'detected_text': detected_text,
-                    'category': category,
-                    'timestamp': firestore.SERVER_TIMESTAMP
-                })
-            
-            # Delete the temporary file
-            os.unlink(temp_file_path)
+                # Delete the temporary file
+                os.unlink(temp_file_path)
+            else:
+                # If the screenshot has already been processed, break the loop
+                break
         
         # Wait for a while before checking again
         # Adjust the sleep time as needed
