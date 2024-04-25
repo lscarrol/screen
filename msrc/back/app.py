@@ -32,13 +32,16 @@ def run_down_screen(api, username):
 def call_gpt3(request, categories):
     openai.api_key = os.getenv('OPENAI_API_KEY')
 
+    prompt = f"What do you think this text is: {request}\n\n"
+    prompt += "Return the result in this format:\n"
+    prompt += "Category | Name | Location (if applicable) | Short Description\n"
+    prompt += "If any of the fields are not applicable or cannot be determined, use 'N/A' as the value.\n"
+    prompt += "Always return the result in the specified format with 4 fields separated by '|'."
+
     response = openai.completions.create(
         model="gpt-3.5-turbo-instruct",
-        prompt="What do you think this text is: " + \
-        request + \
-        " Return the result in this format: Category | Name | Location (if applicable) | Short Description /n\
-          It must be split with |. Only return one answer, always with 4 things split by |",
-        max_tokens=100
+        prompt=prompt,
+        max_tokens=1000
     )
 
     return response.choices[0].text.strip()
@@ -91,20 +94,17 @@ def down_screen(api, username):
                     gpt3_response = call_gpt3(detected_text, None)
                     print(f'GPT-3 response: {gpt3_response}')
 
-                    screenshot_ref.set({
-                        'filename': photo.filename,
-                        'detected_text': detected_text,
-                        'timestamp': firestore.SERVER_TIMESTAMP
-                    })
+                    
 
                     if len(gpt3_response.split('|')) != 4:
-                        category, name, location, description = None, None, None, None
-                    # Extract category, name, location, and description from GPT-3 response
-                    category, name, location, description = gpt3_response.split('|')
-                    category = category.strip()
-                    name = name.strip()
-                    location = location.strip()
-                    description = description.strip()
+                        print("GPT-3 response does not match the expected format.")
+                        category, name, location, description = 'N/A', 'N/A', 'N/A', 'N/A'
+                    else:
+                        category, name, location, description = gpt3_response.split('|')
+                        category = category.strip()
+                        name = name.strip()
+                        location = location.strip()
+                        description = description.strip()
                     
                     # Save the screenshot details and extracted data in Firestore
                     if name != None:
@@ -115,6 +115,11 @@ def down_screen(api, username):
                             'description': description
                         })
                 
+                    screenshot_ref.set({
+                        'filename': photo.filename,
+                        'detected_text': detected_text,
+                        'timestamp': firestore.SERVER_TIMESTAMP
+                    })
                 # Delete the temporary file
                 os.unlink(temp_file_path)
             else:
