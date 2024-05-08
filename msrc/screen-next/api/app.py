@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 import threading
 
 
-cred = credentials.Certificate('auth.json')
+cred = credentials.Certificate('api/auth.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
