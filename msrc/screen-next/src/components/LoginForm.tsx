@@ -19,7 +19,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/login', {
+      const response = await axios.post(`https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/login`, {
         username,
         password,
       });
@@ -36,7 +36,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
   const handleValidate2FA = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/validate_2fa', {
+      const response = await axios.post(`https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/validate_2fa`, {
         username,
         password,
         code,
@@ -65,7 +65,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
             Screen is a cutting-edge tool designed to revolutionize the way you capture, organize, and share your screenshots. With its intuitive interface and powerful features, Screen streamlines your workflow and enhances productivity.
           </p>
           <p className="text-lg mt-4">
-            Whether youre a designer, developer, or content creator, Screen provides a seamless experience for managing your visual assets. Say goodbye to the hassle of scattered screenshots and hello to a centralized hub that keeps your images organized and easily accessible.
+            Whether you&apos;re a designer, developer, or content creator, Screen provides a seamless experience for managing your visual assets. Say goodbye to the hassle of scattered screenshots and hello to a centralized hub that keeps your images organized and easily accessible.
           </p>
         </motion.div>
       </div>

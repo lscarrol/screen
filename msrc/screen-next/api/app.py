@@ -21,7 +21,13 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "https://screen-git-oswald-dev-lscarrols-projects.vercel.app", "methods": ["GET", "POST"]}})
+
+if os.environ.get('VERCEL_ENV') == 'production':
+    cors_origin = f"https://{os.environ.get('VERCEL_URL')}"
+else:
+    cors_origin = f"https://{os.environ.get('VERCEL_URL')}"
+
+CORS(app, resources={r"/api/*": {"origins": cors_origin, "methods": ["GET", "POST"]}})
 
 load_dotenv()
 openai.api_key = os.environ["OPENAI_API_KEY"]
@@ -196,4 +202,3 @@ def validate_2fa():
         return jsonify({'success': True})
     else:
         return jsonify({'success': False, 'message': 'Failed to verify 2FA code.'})
-
