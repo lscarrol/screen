@@ -3,17 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "flask-dev": "python3 api/app.py",
+    "dev": "next dev",
+    "con": "concurrently \"npm run dev\" \"npm run flask-dev\""
   },
   "dependencies": {
     "@headlessui/react": "^2.0.3",
+    "@heroicons/react": "^1.0.6",
     "@radix-ui/react-slot": "^1.0.2",
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "concurrently": "^8.2.2",
     "firebase": "^10.11.1",
     "framer-motion": "^11.1.9",
     "lucide-react": "^0.378.0",

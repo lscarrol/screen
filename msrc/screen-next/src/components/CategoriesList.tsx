@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, query, onSnapshot } from 'firebase/firestore';
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 
 const firebaseConfig = {
@@ -63,39 +63,50 @@ const CategoriesList: React.FC<CategoriesListProps> = ({ username }) => {
   }, [username]);
 
   return (
-    <div className="container mx-auto px-4">
-      <h1 className="text-4xl font-bold mb-8">Categories</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {Object.entries(categories).map(([category, items]) => (
-          <motion.div
-            key={category}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Card>
-              <CardHeader>
-                <CardTitle>{category}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <motion.ul>
-                  {items.map((item) => (
-                    <motion.li
-                      key={item.name}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <div className="text-lg font-bold">{item.name}</div>
-                      <p className="text-gray-600">Location: {item.location}</p>
-                      <p className="text-gray-600">Description: {item.description}</p>
-                    </motion.li>
-                  ))}
-                </motion.ul>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
+    <div className="bg-white min-h-screen">
+      <nav className="bg-white py-4 ">
+        <div className="flex justify-between items-center px-4 mx-auto max-w-7xl">
+          <div className="text-xl font-bold">screen</div>
+          <div>{username}</div>
+        </div>
+      </nav>
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {Object.entries(categories).map(([category, items]) => (
+            <motion.div
+              key={category}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              <Card className="rounded-lg shadow-lg">
+                <CardHeader>
+                  <CardTitle>{category}s</CardTitle>
+                  <div className="w-3/4 h-px bg-gray-200 mt-2"></div>
+                </CardHeader>
+                <CardContent>
+                  <motion.ul>
+                    {items.map((item, index) => (
+                      <motion.li
+                        key={item.name}
+                        className={`py-2 ${index !== items.length - 1 ? 'border-b border-gray-200' : ''}`}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.4 }}
+                      >
+                        <div className="font-medium">{item.name}</div>
+                        {item.location !== 'N/A' && (
+                          <p className="text-gray-600">Location: {item.location}</p>
+                        )}
+                        <p className="text-gray-600">Description: {item.description}</p>
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   );
