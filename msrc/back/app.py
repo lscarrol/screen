@@ -21,7 +21,7 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "https://screen-dm0qgdggc-lscarrols-projects.vercel.app", "methods": ["GET", "POST"]}})
+CORS(app, resources={r"/api/*": {"origins": "https://screen-git-oswald-dev-lscarrols-projects.vercel.app", "methods": ["GET", "POST"]}})
 
 load_dotenv()
 openai.api_key = os.environ["OPENAI_API_KEY"]
