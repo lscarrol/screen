@@ -14,15 +14,17 @@ from dotenv import load_dotenv
 import threading
 
 
-cred = credentials.Certificate('.auth.vercel.json')
+auth_json_content = os.environ['AUTH_JSON']
+auth_json = json.loads(auth_json_content)
+cred = credentials.Certificate(auth_json)
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
+CORS(app, resources={r"/api/*": {"origins": "https://screen-git-oswald-dev-lscarrols-projects.vercel.app", "methods": ["GET", "POST"]}})
 
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = os.environ["OPENAI_API_KEY"]
 
 
 def run_down_screen(api, username):
@@ -30,7 +32,7 @@ def run_down_screen(api, username):
     thread.start()
 
 def call_gpt3(request, categories):
-    openai.api_key = os.getenv('OPENAI_API_KEY')
+    openai.api_key = os.environ["OPENAI_API_KEY"]
 
     prompt = f"What do you think this text is: {request}\n\n"
     prompt += "Return the result in this format:\n"
@@ -195,5 +197,3 @@ def validate_2fa():
     else:
         return jsonify({'success': False, 'message': 'Failed to verify 2FA code.'})
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
