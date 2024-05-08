@@ -27,7 +27,7 @@ if os.environ.get('VERCEL_ENV') == 'production':
 else:
     cors_origin = f"https://{os.environ.get('VERCEL_URL')}"
 
-CORS(app, resources={r"/api/*": {"origins": cors_origin, "methods": ["GET", "POST"]}})
+CORS(app, resources={r"/api/*": {"origins": cors_origin, "methods": ["GET", "POST", "OPTIONS"]}})
 
 load_dotenv()
 openai.api_key = os.environ["OPENAI_API_KEY"]
@@ -202,3 +202,8 @@ def validate_2fa():
         return jsonify({'success': True})
     else:
         return jsonify({'success': False, 'message': 'Failed to verify 2FA code.'})
+
+
+@app.route('/api/test', methods=['GET'])
+def test():
+    return "Testing success!"
