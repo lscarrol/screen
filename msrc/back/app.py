@@ -99,6 +99,13 @@ def down_screen(api, username):
                     if len(gpt3_response.split('|')) != 4:
                         print("GPT-3 response does not match the expected format.")
                         category, name, location, description = 'N/A', 'N/A', 'N/A', 'N/A'
+                        screenshot_ref.set({
+                        'filename': photo.filename,
+                        'detected_text': detected_text,
+                        'timestamp': firestore.SERVER_TIMESTAMP
+                        })
+                        continue
+
                     else:
                         category, name, location, description = gpt3_response.split('|')
                         category = category.strip()
@@ -107,14 +114,16 @@ def down_screen(api, username):
                         description = description.strip()
                     
                     # Save the screenshot details and extracted data in Firestore
-                    if name != None:
+                    if name and '/' not in name:
                         category_ref = db.collection('screenshots').document(username).collection('categories').document(name)
                         category_ref.set({
                             'category': category,
                             'location': location,
                             'description': description
                         })
-                
+                    else:
+                        name = name.replace('/', '-')
+                        print("Invalid name for category document.")
                     screenshot_ref.set({
                         'filename': photo.filename,
                         'detected_text': detected_text,
