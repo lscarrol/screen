@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const LoginForm = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -59,81 +62,67 @@ const LoginForm = ({ onLogin }) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <h2 className="text-2xl font-bold mb-4">Login</h2>
-      <form onSubmit={handleLogin}>
-        <div className="mb-4">
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-        <div className="mb-4">
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-        <div className="flex items-center justify-between">
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Login
-          </button>
-        </div>
-      </form>
-      <h2 className="text-2xl font-bold mt-8 mb-4">Login with Session</h2>
-      <form onSubmit={handleLoginWithSession}>
-        <div className="mb-4">
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-        <div className="flex items-center justify-between">
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Login with Session
-          </button>
-        </div>
-      </form>
+    <Card className="max-w-md mx-auto mt-8">
+      <CardHeader>
+        <CardTitle>Login</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleLogin}>
+          <div className="mb-4">
+            <Input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <Input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="flex justify-end">
+            <Button type="submit">Login</Button>
+          </div>
+        </form>
+      </CardContent>
+      <CardFooter>
+        <form onSubmit={handleLoginWithSession}>
+          <div className="mb-4">
+            <Input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div className="flex justify-end">
+            <Button type="submit">Login with Session</Button>
+          </div>
+        </form>
+      </CardFooter>
       {requires2FA && (
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">2FA Validation</h2>
+        <CardFooter>
+          <CardTitle>2FA Validation</CardTitle>
           <form onSubmit={handleValidate2FA}>
             <div className="mb-4">
-              <input
+              <Input
                 type="text"
                 placeholder="2FA Code"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
             </div>
-            <div className="flex items-center justify-between">
-              <button
-                type="submit"
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              >
-                Validate
-              </button>
+            <div className="flex justify-end">
+              <Button type="submit">Validate</Button>
             </div>
           </form>
-        </div>
+        </CardFooter>
       )}
-    </div>
+    </Card>
   );
 };
 
