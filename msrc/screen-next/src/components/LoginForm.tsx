@@ -19,7 +19,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/login`, {
+      const response = await axios.post('/api/login', {
         username,
         password,
       });
@@ -36,7 +36,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
   const handleValidate2FA = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/validate_2fa`, {
+      const response = await axios.post('/api/validate_2fa', {
         username,
         password,
         code,
