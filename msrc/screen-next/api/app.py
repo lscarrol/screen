@@ -22,6 +22,8 @@ db = firestore.client()
 
 app = Flask(__name__)
 
+print(os.environ.get('VERCEL_URL'))
+
 if os.environ.get('VERCEL_ENV') == 'production':
     cors_origin = f"https://{os.environ.get('VERCEL_URL')}"
 else:
