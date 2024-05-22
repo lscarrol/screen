@@ -165,6 +165,8 @@ def login():
 
         try:
             api.authenticate()
+        except:
+            return jsonify({'success': False, 'message': 'Failed to authenticate with saved session.'})
     else:
         api = PyiCloudService(username, password)
         session_data = api.session_data
