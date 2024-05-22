@@ -155,7 +155,7 @@ def login():
     username = data['username']
     password = data['password']
 
-    if password == None:
+    if password == None or password == "":
         session_doc = db.collection('sessions').document(username).get()
         if session_doc.exists:
             session_data = session_doc.to_dict()
