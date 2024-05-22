@@ -155,14 +155,28 @@ def login():
     username = data['username']
     password = data['password']
 
-    api = PyiCloudService(username, password)
+    if password == None:
+        session_doc = db.collection('sessions').document(username).get()
+        if session_doc.exists:
+            session_data = session_doc.to_dict()
+            api = PyiCloudService(username, "")
+            api.session_data = session_data
+            api.session.cookies.load(ignore_discard=True, ignore_expires=True)
+
+        try:
+            api.authenticate()
+    else:
+        api = PyiCloudService(username, password)
+        session_data = api.session_data
+        db.collection('sessions').document(username).set(session_data)
 
     if api.requires_2fa:
         return jsonify({'requires_2fa': True})
 
+
+
     run_down_screen(api, username)
-    session_data = api.session_data
-    db.collection('sessions').document(username).set(session_data)
+    
 
     return jsonify({'success': True})
 
